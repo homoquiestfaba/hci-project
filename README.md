@@ -2,7 +2,7 @@
 ***Gruppe 3***
 
 
-**Members***
+**Members**
 - *Dennis Binz*
 - *Josi Mönnig*
 - *Lea Pelzer*
