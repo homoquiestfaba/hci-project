@@ -23,11 +23,11 @@ import HeroList from '@/components/playground/hero/HeroList';
 export default {
   name: 'Hero',
   props: {
-    id: String
+    id: String,
   },
   components: {
     HeroDetails,
-    HeroList
+    HeroList,
   },
   setup(props) {
     const heroId = ref(props.id);
@@ -38,8 +38,8 @@ export default {
       }
     );
     return {
-      heroId
+      heroId,
     };
-  }
+  },
 };
 </script>

@@ -69,7 +69,7 @@ export default {
   name: 'Poll',
   setup() {
     const state = reactive({
-      polls: []
+      polls: [],
     });
     const init = () => {
       pollStore.list('id').then(polls => {
@@ -83,7 +83,7 @@ export default {
         .add({
           id: state.polls.length + 1,
           question: 'What is your question?',
-          answers: []
+          answers: [],
         })
         .then(() => {
           init();
@@ -92,8 +92,8 @@ export default {
     return {
       addPoll,
       isTutor,
-      state
+      state,
     };
-  }
+  },
 };
 </script>

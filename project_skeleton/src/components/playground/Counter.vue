@@ -71,10 +71,10 @@ export default {
     CounterVuex2,
     CounterVuex3,
     CounterVuex4,
-    CounterVuex5
+    CounterVuex5,
   },
   beforeCreate() {
     this.$store.commit('init');
-  }
+  },
 };
 </script>
