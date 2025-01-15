@@ -1,16 +1,11 @@
 <script setup>
-defineProps({
-  msg: {
-    type: String,
-    required: true,
-  },
-})
 </script>
 
 <template>
-  <div></div>
+  <div class="border-rose-500 border-2 mr-80 ml-80 rounded-lg flex justify-center">
+    <p>Hier ist das Kursanmeldungssystem Tannhäuser Gate</p>
+  </div>
 </template>
 
-<style scoped>
-
+<style>
 </style>

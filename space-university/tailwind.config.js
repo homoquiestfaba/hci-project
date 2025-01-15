@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  purge: ['./public/index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  content: [],
+  content: ['./public/**/*.html',
+    './src/**/*.{js,jsx,ts,tsx,vue}',],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('tailwindcss-primeui')],
 }
 
