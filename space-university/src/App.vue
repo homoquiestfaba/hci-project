@@ -4,12 +4,12 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header>
-    <div class="bg-indigo-800 shadow-2xl flex justify-around items-center">
+    <div data-aos="fade-down" data-aos-duration="5000" class="bg-indigo-800 shadow-2xl flex justify-around items-center">
       <div class="text-stone-50 flex flex-row items-center gap-3">
         <img alt="Vue logo" class="rounded-full" src="@/assets/gate.jpg" width="100" height="100" />
         <h1 class="text-3xl tracking-wide">Tannhäuser Gate</h1>
       </div>
-      <div class="card bg-stone-50 !rounded-md">
+      <div class="card !bg-stone-50 !rounded-md">
         <Menubar :model="items">
           <template #item="{ item, props, hasSubmenu }">
             <div class="!bg-stone-50">
@@ -32,11 +32,11 @@ import { RouterLink, RouterView } from 'vue-router'
         <div class="flex flex-col gap-3 justify-center">
           <div class="flex flex-col gap-1">
             <InputText v-model="user" name="username" type="text" placeholder="Username"
-              class="bg-white rounded-full py-0.5" />
+              class="bg-white rounded-md py-0.5" />
           </div>
           <div class="flex flex-col gap-1">
             <InputText v-model="pass" name="password" type="password" placeholder="Passwort"
-              class="bg-white rounded-full py-0.5" />
+              class="bg-white rounded-md py-0.5" />
           </div>
         </div>
         <div class="card flex justify-center">
@@ -49,7 +49,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
   <div class="pb-14"></div>
 
-  <RouterView />
+  <RouterView data-aos="fade-down" data-aos-duration="4000" />
 </template>
 
 <script>
@@ -59,6 +59,7 @@ import Password from 'primevue/password';
 import Menubar from 'primevue/menubar'
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
 
 const router = useRouter();
 
@@ -70,7 +71,7 @@ const items = ref([
   },
   {
     label: 'Rolle',
-    icon: 'pi pi-palette',
+    icon: 'pi pi-user',
     items: [
       {
         label: 'Studierende',
@@ -81,6 +82,11 @@ const items = ref([
         route: 'about'
       }
     ]
+  },
+  {
+    label: 'Campus',
+    icon: 'pi pi-map',
+    route: 'campus'
   }
 ]);
 
