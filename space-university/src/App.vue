@@ -1,28 +1,28 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import {RouterLink, RouterView} from 'vue-router'
 </script>
 
 <template>
   <header>
-    <div data-aos="fade-down" data-aos-duration="5000" class="bg-indigo-800 shadow-2xl flex justify-around items-center">
-      <div class="text-stone-50 flex flex-row items-center gap-3">
-        <img alt="Vue logo" class="rounded-full" src="@/assets/gate.jpg" width="100" height="100" />
+    <div data-aos="fade-down" data-aos-duration="5000" class="shadow-2xl flex justify-around items-center">
+      <div class="flex flex-row items-center gap-3">
+        <img alt="Vue logo" class="rounded-full" src="@/assets/gate.jpg" width="80" height="50"/>
         <h1 class="text-3xl tracking-wide">Tannhäuser Gate</h1>
       </div>
-      <div class="card !bg-stone-50 !rounded-md">
-        <Menubar :model="items">
+      <div class="card !rounded-md">
+        <Menubar :model="items" class="">
           <template #item="{ item, props, hasSubmenu }">
-            <div class="!bg-stone-50">
+            <div class="">
               <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
                 <a v-ripple :href="href" v-bind="props.action" @click="navigate">
-                  <span :class="item.icon" />
+                  <span :class="item.icon"/>
                   <span>{{ item.label }}</span>
                 </a>
               </RouterLink>
               <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action">
-                <span :class="item.icon" />
+                <span :class="item.icon"/>
                 <span>{{ item.label }}</span>
-                <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down" />
+                <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down"/>
               </a>
             </div>
           </template>
@@ -32,24 +32,24 @@ import { RouterLink, RouterView } from 'vue-router'
         <div class="flex flex-col gap-3 justify-center">
           <div class="flex flex-col gap-1">
             <InputText v-model="user" name="username" type="text" placeholder="Username"
-              class="bg-white rounded-md py-0.5" />
+                       class="bg-white rounded-md py-0.5"/>
           </div>
           <div class="flex flex-col gap-1">
             <InputText v-model="pass" name="password" type="password" placeholder="Passwort"
-              class="bg-white rounded-md py-0.5" />
+                       class="bg-white rounded-md py-0.5"/>
           </div>
         </div>
         <div class="card flex justify-center">
-          <Button class="bg-yellow-400 hover:!bg-yellow-500 my-10" type="button" label="Einloggen" icon="pi pi-sign-in"
-            :loading="loading" @click="load" />
+          <Button class="my-10" type="button" label="Einloggen" icon="pi pi-sign-in"
+                  :loading="loading" @click="load"/>
         </div>
       </div>
     </div>
   </header>
-
-  <div class="pb-14"></div>
-
-  <RouterView data-aos="fade-down" data-aos-duration="4000" />
+  <div>
+    <div class="pb-14"></div>
+    <RouterView data-aos="fade-down" data-aos-duration="4000" class="write"/>
+  </div>
 </template>
 
 <script>
@@ -57,8 +57,8 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Password from 'primevue/password';
 import Menubar from 'primevue/menubar'
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import {ref} from 'vue';
+import {useRouter} from 'vue-router';
 
 
 const router = useRouter();
@@ -75,11 +75,11 @@ const items = ref([
     items: [
       {
         label: 'Studierende',
-        route: 'about'
+        route: 'student'
       },
       {
         label: 'Dozierende',
-        route: 'about'
+        route: 'dozent'
       }
     ]
   },
@@ -170,5 +170,9 @@ nav a:first-of-type {
 }*/
 .custom-round {
   @apply rounded-full border-none
+}
+
+.write {
+  color: var(--p-primary-contrast-color);
 }
 </style>

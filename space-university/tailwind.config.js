@@ -6,7 +6,7 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Roboto', 'Arial', 'sans-serif'], // Add your font
-            },
+            }
         },
     },
     plugins: [require('tailwindcss-primeui')],

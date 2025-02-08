@@ -1,2 +1,17 @@
 @import './base.css';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    background-color: var(--p-background-color);
+}
+header {
+    background-color: var(--p-nav-bar-color);
+}
+
+body{
+    color: var(--p-surface-100);
+}
+
+.contrast-border{
+    border-color: var(--p-contrast-1);
+}

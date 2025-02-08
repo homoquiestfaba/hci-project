@@ -16,6 +16,20 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
+    },    {
+      path: '/student',
+      name: 'student',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/StudentView.vue'),
+    },    {
+      path: '/dozent',
+      name: 'dozent',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/DozentView.vue'),
     },
     {
       path: '/campus',
@@ -24,6 +38,22 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/CampusView.vue'),
+    },
+    {
+      path: '/stundenplan',
+      name: 'stundenplan',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/StundenplanView.vue'),
+    },
+    {
+      path: '/immatrikulation',
+      name: 'immatrikulation',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/ImmatrikulationView.vue'),
     },
   ],
 })

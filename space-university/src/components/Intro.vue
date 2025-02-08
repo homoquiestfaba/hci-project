@@ -1,10 +1,10 @@
 <script setup>
-import HomeGrid from "@/components/HomeGrid.vue";
 </script>
 
 <template xmlns="http://www.w3.org/1999/html">
   <div class="flex flex-col items-center gap-4 mx-20">
-    <div class="flex flex-col items-center gap-4 mx-20 p-10 border border-2 border-orange-700 rounded-md shadow-xl" data-aos="fade-down" data-aos-delay="100">
+    <div class="flex flex-col items-center gap-4 mx-20 p-10 border-2 border-orange-500 rounded-md shadow-xl"
+         data-aos="fade-down" data-aos-delay="100">
       <h1 class="text-3xl">
         Willkommen im Kursanmeldungssystem der Space University
       </h1>
@@ -20,10 +20,31 @@ import HomeGrid from "@/components/HomeGrid.vue";
         </p>
       </div>
     </div>
-    <HomeGrid/>
+    <div class="zoom">
+      <RouterLink to="/immatrikulation">
+        <div class="flex flex-row items-center gap-4 mx-20 p-10 border-2  rounded-md shadow-xl contrast-border"
+             data-aos="fade-down" data-aos-delay="100">
+
+          <i class="pi pi-sign-in"></i>
+          <h1 class="text-3xl">
+            Immatrikulation
+          </h1>
+
+        </div>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
 <script>
-
 </script>
+
+<style scoped>
+.zoom {
+  transition: transform .2s;
+}
+
+.zoom:hover {
+  transform: scale(1.05);
+}
+</style>
