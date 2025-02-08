@@ -3,7 +3,7 @@ import DozentGrid from "@/components/DozentGrid.vue";
 </script>
 
 <template>
-<DozentGrid></DozentGrid>
+  <DozentGrid></DozentGrid>
 </template>
 
 <style scoped>

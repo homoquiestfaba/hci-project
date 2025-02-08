@@ -15,3 +15,15 @@ body{
 .contrast-border{
     border-color: var(--p-contrast-1);
 }
+
+.zoom {
+    transition: transform .2s;
+}
+
+.zoom:hover {
+    transform: scale(1.05);
+}
+
+.clickable{
+    border-color: var(--p-contrast-1);
+}
