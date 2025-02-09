@@ -3,26 +3,25 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { DatePicker } from "primevue";
 import { FloatLabel } from "primevue";
-import { ref } from "vue";
-import kurse from '@/assets/data/kurse.js';
+import { ref, onMounted, watch } from "vue";
 
+// Try to load existing courses from localStorage
+const kurse = ref(JSON.parse(localStorage.getItem("courses")));
 
-// Liste der Eingabefelder
+// List of input fields
 const fields = ["Titel", "Beschreibung", "Dozierender", "Raum", "Tag", "Uhrzeit"];
 
-// Zustand für den Ladebutton
-const loading = ref(false);
-
-// Reaktive Datenfelder
+// Reactive form data
 const formData = ref({
   Titel: "",
   Beschreibung: "",
   Dozierender: "",
   Raum: "",
   Tag: "",
-  Uhrzeit: ""
+  Uhrzeit: null // Stores raw Date object
 });
 
+// Extract time in HH:mm format
 const getFormattedTime = (date) => {
   if (!date) return "";
   return new Intl.DateTimeFormat("de-DE", {
@@ -32,9 +31,17 @@ const getFormattedTime = (date) => {
   }).format(date);
 };
 
-// Funktion zum Speichern der Daten
+// Save to Local Storage whenever `kurse` changes
+watch(kurse, (newKurse) => {
+  localStorage.setItem("courses", JSON.stringify(newKurse));
+}, { deep: true });
+
+// Function to save data
 const load = () => {
-  loading.value = true;
+  if (!formData.value.Uhrzeit) {
+    alert("Bitte eine Uhrzeit auswählen!");
+    return;
+  }
 
   const out = {
     title: formData.value.Titel,
@@ -42,24 +49,20 @@ const load = () => {
     lecturer: formData.value.Dozierender,
     room: formData.value.Raum,
     day: formData.value.Tag,
-    time: getFormattedTime(formData.value.Uhrzeit)
+    time: getFormattedTime(formData.value.Uhrzeit) // Store only time
   };
 
-  kurse.value.push(out);  // Append new entry to the kurse array
+  kurse.value.push(out); // Add new course
 
+  // Reset form after submission
   formData.value = {
-    title: "",
-    description: "",
-    lecturer: "",
-    room: "",
-    day: "",
-    time: ""
-  }
-
-  setTimeout(() => {
-    loading.value = false;
-    console.log("Kurse:", kurse); // Debug output
-  }, 2000);
+    Titel: "",
+    Beschreibung: "",
+    Dozierender: "",
+    Raum: "",
+    Tag: "",
+    Uhrzeit: null
+  };
 };
 </script>
 
@@ -75,8 +78,17 @@ const load = () => {
       </FloatLabel>
     </div>
     <div class="flex flex-col items-center justify-center gap-3">
-      <Button class="my-10 char" type="button" label="Abschicken" icon="pi pi-sign-in"
-              :loading="loading" @click="load" />
+      <Button class="my-10 char" type="button" label="Abschicken" icon="pi pi-sign-in" @click="load" />
+    </div>
+
+    <!-- Show stored courses -->
+    <div v-if="kurse.length">
+      <h3 class="text-xl">Gespeicherte Kurse</h3>
+      <ul>
+        <li v-for="(kurs, index) in kurse" :key="index">
+          <strong>{{ kurs.title }}</strong> - {{ kurs.time }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>

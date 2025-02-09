@@ -1,4 +1,9 @@
 <script setup>
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import {FloatLabel} from "primevue";
+import Password from 'primevue/password';
+import Menubar from 'primevue/menubar'
 import {RouterLink, RouterView} from 'vue-router'
 </script>
 
@@ -30,14 +35,10 @@ import {RouterLink, RouterView} from 'vue-router'
       </div>
       <div class="flex flex-row gap-7">
         <div class="flex flex-col gap-3 justify-center">
-          <div class="flex flex-col gap-1">
-            <InputText v-model="user" name="username" type="text" placeholder="Username"
-                       class="bg-white rounded-md py-0.5"/>
-          </div>
-          <div class="flex flex-col gap-1">
-            <InputText v-model="pass" name="password" type="password" placeholder="Passwort"
-                       class="bg-white rounded-md py-0.5"/>
-          </div>
+          <InputText v-model="user" name="username" type="text" placeholder="Username"
+                     class="w-full"/>
+          <Password v-model="pass" name="password" toggleMask :feedback="false" placeholder="Passwort"
+                    class="bg-transparent"/>
         </div>
         <div class="card flex justify-center">
           <Button class="my-10" type="button" label="Einloggen" icon="pi pi-sign-in"
@@ -53,10 +54,6 @@ import {RouterLink, RouterView} from 'vue-router'
 </template>
 
 <script>
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Password from 'primevue/password';
-import Menubar from 'primevue/menubar'
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
 

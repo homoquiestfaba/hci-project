@@ -27,3 +27,7 @@ body{
 .clickable{
     border-color: var(--p-contrast-1);
 }
+
+thead tr{
+    background-color: var(--p-surface-800);
+}
