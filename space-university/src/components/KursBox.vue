@@ -10,8 +10,8 @@ const props = defineProps({
 </script>
 
 <template>
-  <div :class="{zoom:click}">
-    <div class="intro-box" :class="{clickable:click, 'border-orange-700':!click}" data-aos="fade-up"
+  <div class="">
+    <div class="intro-box" data-aos="fade-up"
          data-aos-delay="100">
       <h2 class="text-2xl">
         {{ title }}
@@ -30,7 +30,8 @@ const props = defineProps({
 
 <style scoped>
 .intro-box {
-  @apply flex flex-col items-center gap-4 border border-2 rounded-md shadow-xl m-10 p-10
+  @apply flex flex-col items-center gap-4 border-2 rounded-md shadow-xl m-10 p-10;
+  border-color: var(--p-contrast-2);
 }
 
 ul{

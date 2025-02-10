@@ -80,16 +80,6 @@ const load = () => {
     <div class="flex flex-col items-center justify-center gap-3">
       <Button class="my-10 char" type="button" label="Abschicken" icon="pi pi-sign-in" @click="load" />
     </div>
-
-    <!-- Show stored courses -->
-    <div v-if="kurse.length">
-      <h3 class="text-xl">Gespeicherte Kurse</h3>
-      <ul>
-        <li v-for="(kurs, index) in kurse" :key="index">
-          <strong>{{ kurs.title }}</strong> - {{ kurs.time }}
-        </li>
-      </ul>
-    </div>
   </div>
 </template>
 
