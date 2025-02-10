@@ -9,12 +9,14 @@ import {ref, watch, computed} from "vue";
 // Define the days of the week
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-const row = [1,2,3,4,5,6,7];
+const row = [1, 2, 3, 4, 5, 6, 7];
 
-const times = {1: "08:00", 2: "10:00", 3: "12:00", 4: "14:00", 5: "16:00", 6: "18:00", 7: "20:00"};
+const times = ["08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00"];
 
 // Load timetable data from localStorage or initialize an empty object
-const courses = ref(JSON.parse(localStorage.getItem("courses")) || {});
+const courses = ref(JSON.parse(localStorage.getItem("courses")));
+
+const appointments = ref(JSON.parse(localStorage.getItem("appointments")) || {});
 
 // Track the current week (default: 1)
 const currentWeek = ref(1);
@@ -38,28 +40,28 @@ const getEmptyWeek = () => {
 };
 
 // Ensure each week has a timetable
-if (!courses.value[currentWeek.value]) {
-  courses.value[currentWeek.value] = getEmptyWeek();
+if (!appointments.value[currentWeek.value]) {
+  appointments.value[currentWeek.value] = getEmptyWeek();
 }
 
-// Reactive form input for new courses
+// Reactive form input for new appointments
 const newCourse = ref({
   title: "",
   day: "",
   time: "",
   lecturer: "",
   room: "",
-  slot: ""
+  span: ""
 });
 
-// Computed property to get the current week's courses
+// Computed property to get the current week's appointments
 const currentWeekCourses = computed(() => {
-  return courses.value[currentWeek.value] || getEmptyWeek();
+  return appointments.value[currentWeek.value] || getEmptyWeek();
 });
 
 // Watch for changes and save to localStorage
-watch(courses, (newVal) => {
-  localStorage.setItem("courses", JSON.stringify(newVal));
+watch(appointments, (newVal) => {
+  localStorage.setItem("appointments", JSON.stringify(newVal));
 }, {deep: true});
 
 // Function to add a course
@@ -69,18 +71,29 @@ const addCourse = () => {
     return;
   }
 
-  newCourse.value.slot = "10:00";
+  let formatTime = getFormattedTime(newCourse.value.time);
+  let timeSlice = formatTime.slice(0, 2)
+
+  for (let time in times) {
+    console.log(timeSlice < times[time]);
+    if (timeSlice < times[time]) {
+      newCourse.value.span = times[time];
+      break;
+    }
+  }
 
   // Add the new course to the correct week and day
-  courses.value[currentWeek.value][newCourse.value.day].push({
+  appointments.value[currentWeek.value][newCourse.value.day].push({
     ...newCourse.value,
     time: getFormattedTime(newCourse.value.time)
   });
 
-  courses.value = Object.assign({}, courses.value);
+  appointments.value = Object.assign({}, appointments.value);
 
   // Reset form fields
   newCourse.value = {title: "", day: "", time: "", lecturer: "", room: ""};
+
+
 };
 
 // Function to switch weeks
@@ -88,15 +101,25 @@ const changeWeek = (direction) => {
   currentWeek.value += direction;
 
   // Initialize week structure if it doesn't exist
-  if (!courses.value[currentWeek.value]) {
-    courses.value[currentWeek.value] = getEmptyWeek();
+  if (!appointments.value[currentWeek.value]) {
+    appointments.value[currentWeek.value] = getEmptyWeek();
   }
 };
 
-// Function to clear the timetable for the current week
-const clearTimetable = () => {
-  courses.value[currentWeek.value] = getEmptyWeek();
-};
+const clearSlot = (curr) => {
+  let clearWeek = appointments.value[currentWeek.value];
+  console.log("--------------------------------------------------")
+  for (let day in days) {
+    let slots = clearWeek[days[day]];
+    for (let slot in slots) {
+      if (curr === slots[slot].title) {
+        console.log(slot);
+        let newApp = appointments.value[currentWeek.value][days[day]].toSpliced(slot, 1);
+        localStorage.setItem("appointments", JSON.stringify(newApp));
+      }
+    }
+  }
+}
 </script>
 
 <template>
@@ -145,7 +168,7 @@ const clearTimetable = () => {
   <!-- Timetable Table -->
   <div class="mx-20 mt-10">
     <div class="flex flex-col items-center justify-center">
-      <table class="w-full max-w-5xl border-collapse shadow-lg rounded-2xl overflow-hidden">
+      <table class="w-full max-w-5xl border-collapse shadow-lg rounded-md overflow-hidden">
         <thead>
         <tr class="text-white">
           <th v-for="day in days" :key="day" class="px-6 py-3 text-lg font-semibold text-center">
@@ -154,16 +177,16 @@ const clearTimetable = () => {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="slot in Math.max(...Object.values(times).map(c => c.length), 1)" :key="slot"
+        <tr v-for="slot in times.length" :key="slot"
             class="tableblock odd:bg-surface-600 even:bg-surface-700">
           <td v-for="day in days" :key="day" class="px-6 py-4 text-center border border-surface-900">
-            <div v-if="currentWeekCourses[day][slot] && currentWeekCourses[day][slot].slot === times[slot]" class="shadow-md rounded-lg p-4">
-              <p>{{currentWeekCourses[day][slot].slot}}</p>
-              <p>{{times[slot]}}</p>
-              <strong class="block text-lg text-blue-700">{{ currentWeekCourses[day][slot].title }}</strong>
-              <span class="text-gray-700">{{ currentWeekCourses[day][slot].time }}</span><br>
-              <span class="text-gray-600">{{ currentWeekCourses[day][slot].lecturer }}</span><br>
-              <span class="text-gray-500">{{ currentWeekCourses[day][slot].room }}</span>
+            <div v-for="curr in currentWeekCourses[day]">
+                <div v-if="curr.span === times[slot-1]" class="shadow-md rounded-lg p-4">
+                  <p>{{ curr.title }}</p>
+                  <p>{{ currentWeekCourses[day][0].span }}</p>
+                  <p>{{ times[slot - 1] }}</p>
+                  <Button @click="clearSlot(curr.title)"/>
+                </div>
             </div>
           </td>
         </tr>
