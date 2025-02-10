@@ -9,6 +9,10 @@ import {ref, watch, computed} from "vue";
 // Define the days of the week
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
+const row = [1,2,3,4,5,6,7];
+
+const times = {1: "08:00", 2: "10:00", 3: "12:00", 4: "14:00", 5: "16:00", 6: "18:00", 7: "20:00"};
+
 // Load timetable data from localStorage or initialize an empty object
 const courses = ref(JSON.parse(localStorage.getItem("courses")) || {});
 
@@ -45,6 +49,7 @@ const newCourse = ref({
   time: "",
   lecturer: "",
   room: "",
+  slot: ""
 });
 
 // Computed property to get the current week's courses
@@ -63,6 +68,8 @@ const addCourse = () => {
     alert("Please fill in all fields!");
     return;
   }
+
+  newCourse.value.slot = "10:00";
 
   // Add the new course to the correct week and day
   courses.value[currentWeek.value][newCourse.value.day].push({
@@ -115,17 +122,17 @@ const clearTimetable = () => {
       </FloatLabel>
 
       <FloatLabel variant="in">
-        <DatePicker v-model="newCourse.time" timeOnly fluid />
+        <DatePicker v-model="newCourse.time" timeOnly fluid/>
         <label>Time</label>
       </FloatLabel>
 
       <FloatLabel variant="in">
-        <InputText v-model="newCourse.lecturer" type="text" />
+        <InputText v-model="newCourse.lecturer" type="text"/>
         <label>Lecturer</label>
       </FloatLabel>
 
       <FloatLabel variant="in">
-        <InputText v-model="newCourse.room" type="text" />
+        <InputText v-model="newCourse.room" type="text"/>
         <label>Room</label>
       </FloatLabel>
       <Button @click="addCourse" class="add-btn">Add Course</Button>
@@ -135,7 +142,7 @@ const clearTimetable = () => {
     </div>
   </div>
 
-    <!-- Timetable Table -->
+  <!-- Timetable Table -->
   <div class="mx-20 mt-10">
     <div class="flex flex-col items-center justify-center">
       <table class="w-full max-w-5xl border-collapse shadow-lg rounded-2xl overflow-hidden">
@@ -147,10 +154,12 @@ const clearTimetable = () => {
         </tr>
         </thead>
         <tbody>
-        <tr v-for="slot in Math.max(...Object.values(currentWeekCourses).map(c => c.length), 1)" :key="slot"
-            class="odd:bg-surface-600 even:bg-surface-700">
+        <tr v-for="slot in Math.max(...Object.values(times).map(c => c.length), 1)" :key="slot"
+            class="tableblock odd:bg-surface-600 even:bg-surface-700">
           <td v-for="day in days" :key="day" class="px-6 py-4 text-center border border-surface-900">
-            <div v-if="currentWeekCourses[day][slot]" class="shadow-md rounded-lg p-4">
+            <div v-if="currentWeekCourses[day][slot] && currentWeekCourses[day][slot].slot === times[slot]" class="shadow-md rounded-lg p-4">
+              <p>{{currentWeekCourses[day][slot].slot}}</p>
+              <p>{{times[slot]}}</p>
               <strong class="block text-lg text-blue-700">{{ currentWeekCourses[day][slot].title }}</strong>
               <span class="text-gray-700">{{ currentWeekCourses[day][slot].time }}</span><br>
               <span class="text-gray-600">{{ currentWeekCourses[day][slot].lecturer }}</span><br>
@@ -215,12 +224,15 @@ const clearTimetable = () => {
   border-color: var(--p-contrast-2);
 }
 
-.bg-table-odd{
+.bg-table-odd {
   background-color: var(--p-surface-600);
 }
 
-.bg-table-even{
+.bg-table-even {
   background-color: var(--p-surface-700);
 }
 
+.tableblock {
+  height: 100px;
+}
 </style>
