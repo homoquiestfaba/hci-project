@@ -94,19 +94,13 @@ const delExam = () => {
 const gradeExists = ref(false)
 const addGrade = () => {
   console.log("Grade");
-  let outGrade = {key: props.title, value: grade.value}
-  for (let e in student.value.exams) {
-    if (student.value.exams[e].key === outGrade.key) {
-      console.log("Yayyyyyyyyy")
-      student.value.exams[e].value = outGrade.value;
-      gradeExists.value = true;
-      break;
+  for (let course in courses.value) {
+    if (courses.value[course].title === props.title) {
+      courses.value[course]["grade"] = grade.value;
+      console.log(courses);
+      localStorage.setItem("courses", JSON.stringify(courses.value));
     }
   }
-  if (!gradeExists.value) {
-    student.value.exams.push(outGrade);
-  }
-  console.log(student.value.exams);
   //student.value.exams.push();
 }
 
@@ -184,7 +178,7 @@ const del = () => {
                 icon="pi pi-trash"
                 @click="delExam"/>
 
-        <Button v-if="!exam" type="button" label="Noten" icon="pi pi-trophy" @click="gradeVisible = true"/>
+        <Button type="button" label="Noten" icon="pi pi-trophy" @click="gradeVisible = true"/>
         <Dialog v-model:visible="gradeVisible" modal header="Noten hinzufügen" :style="{ width: '25rem' }">
         <span class="text-surface-500 dark:text-surface-400 block mb-8">
           Fügen Sie Noten für die Studierenden des Kurses <strong>{{ title }}</strong> hinzu

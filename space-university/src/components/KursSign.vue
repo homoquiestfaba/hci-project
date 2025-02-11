@@ -22,6 +22,9 @@ watch(data, (newData) => {
   localStorage.setItem("courses", JSON.stringify(newData));
 }, { deep: true });
 
+console.log("DATAAAAAAAAAAAA");
+console.log(data.value);
+
 </script>
 
 <template>
@@ -34,7 +37,8 @@ watch(data, (newData) => {
           :room="kurs.room"
           :day="kurs.day"
           :time="kurs.time"
-          :exam="kurs.exam"/>
+          :exam="kurs.exam"
+          :grade="kurs.grade"/>
     </div>
   </div>
 </template>

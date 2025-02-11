@@ -18,6 +18,7 @@ const fields = [
   "Staat",
   "Planet",
   "E-Mail",
+  "Lieblingsfarbe"
 ];
 
 // Zustand für den Ladebutton
@@ -33,19 +34,21 @@ const load = () => {
 
 <template>
   <div class="flex flex-col items-center justify-center gap-3">
-    <div v-for="field in fields" :key="field">
-      <FloatLabel variant="in">
-        <div>
-          <DatePicker v-if="field === 'Geburtstag'" id="in_label" v-model="date" dateFormat="dd/mm/yy"/>
-          <InputText
-              v-else
-              id="in_label"
-              type="text"
-              class=""
-          />
-        </div>
-        <label for="in_label" class="">{{ field }}</label>
-      </FloatLabel>
+    <div class="grid grid-cols-2 gap-4">
+      <div v-for="field in fields" :key="field">
+        <FloatLabel variant="in">
+          <div>
+            <DatePicker v-if="field === 'Geburtstag'" id="in_label" v-model="date" dateFormat="dd/mm/yy"/>
+            <InputText
+                v-else
+                id="in_label"
+                type="text"
+                class=""
+            />
+          </div>
+          <label for="in_label" class="">{{ field }}</label>
+        </FloatLabel>
+      </div>
     </div>
     <div class="flex flex-col items-center justify-center gap-3">
       <Button

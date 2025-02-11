@@ -48,7 +48,8 @@ const props = defineProps({
   room: String,
   day: String,
   time: String,
-  exam: Object
+  exam: Object,
+  grade: String
 })
 
 let signDict
@@ -130,6 +131,7 @@ const load = async () => {
           <ul>
             <li>Prüfungsdatum: {{ exam.examDate }}</li>
             <li>Prüfungsuhrzeit: {{ exam.examTime }}</li>
+            <li>Note: {{ grade }}</li>
           </ul>
           <Button type="button" label="Prüfungsanmeldung"/>
         </div>
