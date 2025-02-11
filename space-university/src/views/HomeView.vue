@@ -5,7 +5,7 @@ import kurse from "@/assets/data/kurse.js";
 
 const test = localStorage.getItem('courses');
 if(!test) {
-  localStorage.setItem('courses', JSON.stringify(kurse));
+  localStorage.setItem('courses', JSON.stringify(kurse.value));
 }
 </script>
 

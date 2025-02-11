@@ -1,6 +1,6 @@
 <script setup>
 import Button from "primevue/button";
-import {ref, watch} from "vue";
+import {ref} from "vue";
 
 const props = defineProps({
   title: String,
@@ -11,37 +11,10 @@ const props = defineProps({
   time: String,
 })
 
-let signDict
-let sign
-
-if (!localStorage.getItem("sign")) {
-  signDict = ref({})
-  sign = ref(true)
-}else {
-  console.log("--------------------------------------------------")
-  console.log(localStorage.getItem("sign"));
-  signDict = ref(JSON.parse(localStorage.getItem("sign")))
-  let title = props.title
-  console.log(signDict.value[title])
-  sign = ref(!signDict.value[title])
-}
-
-watch(signDict, (newSign) => {
-  localStorage.setItem("sign", JSON.stringify(newSign));
-}, { deep: true });
-
 const loading = ref(false);
 
 const load = () => {
   loading.value = true;
-  const out = ref({
-    title: sign.value,
-  })
-
-  console.log(props.title);
-  signDict.value[props.title] = sign.value;
-  console.log(signDict.value);
-  sign.value = !sign.value;
   setTimeout(() => {
     loading.value = false;
   }, 2000);
@@ -63,21 +36,16 @@ const load = () => {
         <li>Tag: {{ day }}</li>
         <li>Uhrzeit: {{ time }}</li>
       </ul>
-      <div v-if="sign">
       <Button type="button"
-              label="Anmelden"
-              icon="pi pi-pen-to-square"
+              label="Bearbeiten"
+              icon="pi pi-pencil"
               :loading="loading"
               @click="load"/>
-      </div>
-      <div v-else>
-        <Button type="button"
-                label="Abmelden"
-                icon="pi pi-times-circle"
-                :loading="loading"
-                @click="load"/>
-      </div>
-
+      <Button type="button"
+              label="Löschen"
+              icon="pi pi-trash"
+              :loading="loading"
+              @click="load"/>
     </div>
   </div>
 </template>
