@@ -2,6 +2,45 @@
 import Button from "primevue/button";
 import {ref, watch} from "vue";
 
+import ConfirmDialog from 'primevue/confirmdialog';
+import {useConfirm} from "primevue/useconfirm";
+import {useToast} from "primevue/usetoast";
+
+const confirm = useConfirm();
+const toast = useToast();
+
+// Confirming Dialog
+
+const showTemplate = () => {
+  return new Promise((resolve, reject) => {
+    confirm.require({
+      group: 'templating',
+      header: 'Confirmation',
+      message: 'Please confirm to proceed moving forward.',
+      icon: 'pi pi-exclamation-circle',
+      rejectProps: {
+        label: 'Cancel',
+        icon: 'pi pi-times',
+        outlined: true,
+        size: 'small'
+      },
+      acceptProps: {
+        label: 'Save',
+        icon: 'pi pi-check',
+        size: 'small'
+      },
+      accept: () => {
+        toast.add({severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000});
+        resolve(true);
+      },
+      reject: () => {
+        toast.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000});
+        reject(true);
+      }
+    });
+  })
+};
+
 const props = defineProps({
   title: String,
   description: String,
@@ -17,7 +56,7 @@ let sign
 if (!localStorage.getItem("sign")) {
   signDict = ref({})
   sign = ref(true)
-}else {
+} else {
   console.log("--------------------------------------------------")
   console.log(localStorage.getItem("sign"));
   signDict = ref(JSON.parse(localStorage.getItem("sign")))
@@ -28,23 +67,29 @@ if (!localStorage.getItem("sign")) {
 
 watch(signDict, (newSign) => {
   localStorage.setItem("sign", JSON.stringify(newSign));
-}, { deep: true });
+}, {deep: true});
 
 const loading = ref(false);
 
-const load = () => {
-  loading.value = true;
-  const out = ref({
-    title: sign.value,
-  })
+const load = async () => {
+  console.log("Triggered load");
 
-  console.log(props.title);
-  signDict.value[props.title] = sign.value;
-  console.log(signDict.value);
-  sign.value = !sign.value;
-  setTimeout(() => {
-    loading.value = false;
-  }, 2000);
+  try {
+    await showTemplate();
+
+    loading.value = true;
+    const out = ref({
+      title: sign.value,
+    })
+
+    signDict.value[props.title] = sign.value;
+    sign.value = !sign.value;
+    setTimeout(() => {
+      loading.value = false;
+    }, 2000);
+  } catch (error) {
+    console.log("Action was cancelled.");
+  }
 };
 </script>
 
@@ -64,11 +109,11 @@ const load = () => {
         <li>Uhrzeit: {{ time }}</li>
       </ul>
       <div v-if="sign">
-      <Button type="button"
-              label="Anmelden"
-              icon="pi pi-pen-to-square"
-              :loading="loading"
-              @click="load"/>
+        <Button type="button"
+                label="Anmelden"
+                icon="pi pi-pen-to-square"
+                :loading="loading"
+                @click="load"/>
       </div>
       <div v-else>
         <Button type="button"

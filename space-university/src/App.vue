@@ -5,9 +5,19 @@ import {FloatLabel} from "primevue";
 import Password from 'primevue/password';
 import Menubar from 'primevue/menubar'
 import {RouterLink, RouterView} from 'vue-router'
+import ConfirmDialog from "primevue/confirmdialog";
 </script>
 
 <template>
+  <ConfirmDialog group="templating">
+    <template #message="slotProps">
+      <div class="flex flex-col items-center w-full gap-4 border-b border-surface-200 dark:border-surface-700">
+        <i :class="slotProps.message.icon" class="!text-6xl text-primary-500"></i>
+        <p>{{ slotProps.message.message }}</p>
+      </div>
+    </template>
+  </ConfirmDialog>
+
   <header>
     <div data-aos="fade-down" data-aos-duration="5000" class="shadow-2xl flex justify-around items-center">
       <div class="flex flex-row items-center gap-3">

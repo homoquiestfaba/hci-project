@@ -119,6 +119,7 @@ const clearSlot = (curr) => {
       }
     }
   }
+  location.reload();
 }
 </script>
 
@@ -184,8 +185,8 @@ const clearSlot = (curr) => {
                 <div v-if="curr.span === times[slot-1]" class="shadow-md rounded-lg p-4">
                   <p>{{ curr.title }}</p>
                   <p>{{ currentWeekCourses[day][0].span }}</p>
-                  <p>{{ times[slot - 1] }}</p>
-                  <Button @click="clearSlot(curr.title)"/>
+                  <p>{{ curr.time }}</p>
+                  <Button icon="pi pi-trash" @click="clearSlot(curr.title)"/>
                 </div>
             </div>
           </td>

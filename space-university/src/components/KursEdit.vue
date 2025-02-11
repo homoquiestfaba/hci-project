@@ -10,17 +10,14 @@ const data = ref([]);
 let storedKurse = localStorage.getItem("courses");
 if (storedKurse) {
   data.value = JSON.parse(storedKurse);
-  console.log(JSON.parse(storedKurse));
 } else {
   data.value = kurse.value;
-  console.log("In else");
-  console.log(data.value);
   localStorage.setItem("courses", JSON.stringify(kurse.value));
 }
 
 // Watch for updates and sync them to localStorage
 watch(data, (newData) => {
-  localStorage.setItem("courses", JSON.stringify(kurse));
+  localStorage.setItem("courses", JSON.stringify(newData));
 }, { deep: true });
 
 </script>
