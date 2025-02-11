@@ -31,7 +31,8 @@ watch(data, (newData) => {
           :lecturer="kurs.lecturer"
           :room="kurs.room"
           :day="kurs.day"
-          :time="kurs.time"/>
+          :time="kurs.time"
+          :exam="kurs.exam"/>
     </div>
   </div>
 </template>

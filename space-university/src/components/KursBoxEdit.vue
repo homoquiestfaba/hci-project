@@ -13,6 +13,7 @@ const props = defineProps({
   room: String,
   day: String,
   time: String,
+  exam: Object
 })
 
 const courses = ref(JSON.parse(localStorage.getItem("courses")))
@@ -61,7 +62,8 @@ const add = async () => {
   for (let course in courses.value) {
     if (courses.value[course].title === props.title) {
       courses.value[course]["exam"] = out;
-      console.log(courses.value[course]);
+      console.log(courses);
+      localStorage.setItem("courses", JSON.stringify(courses.value));
     }
   }
 
@@ -70,6 +72,19 @@ const add = async () => {
   adding.value = false;
   visible.value = false;
 };
+
+const delExam = () => {
+  for (let course in courses.value) {
+    if (courses.value[course].title === props.title) {
+      console.log(course);
+      delete courses.value[course].exam;
+      console.log("Test")
+      console.log(courses.value);
+      localStorage.setItem("courses", JSON.stringify(courses.value));
+    }
+  }
+  location.reload()
+}
 
 const del = () => {
   deleting.value = true;
@@ -111,7 +126,8 @@ const del = () => {
               :loading="loading"
               @click="load"/>
 
-      <Button type="button"
+      <Button v-if="!exam"
+              type="button"
               label="Prüfung"
               icon="pi pi-plus-circle"
               @click="visible = true"/>
@@ -119,21 +135,27 @@ const del = () => {
         <span class="text-surface-500 dark:text-surface-400 block mb-8">
           Fügen Sie der Prüfung für den Kurs <strong>{{ title }}</strong> einen Termin hinzu
         </span>
-          <div class="flex flex-col items-center w-full gap-4 mb-4">
-            <FloatLabel variant="in">
-              <DatePicker id="date" class="flex-auto" v-model="examDate" dateFormat="dd/mm/yy"/>
-              <label>Datum</label>
-            </FloatLabel>
-            <FloatLabel variant="in">
-              <DatePicker id="email" class="flex-auto" v-model="examTime" timeOnly/>
-              <label>Uhrzeit</label>
-            </FloatLabel>
-          </div>
+        <div class="flex flex-col items-center w-full gap-4 mb-4">
+          <FloatLabel variant="in">
+            <DatePicker id="date" class="flex-auto" v-model="examDate" dateFormat="dd/mm/yy"/>
+            <label>Datum</label>
+          </FloatLabel>
+          <FloatLabel variant="in">
+            <DatePicker id="email" class="flex-auto" v-model="examTime" timeOnly/>
+            <label>Uhrzeit</label>
+          </FloatLabel>
+        </div>
         <div class="flex justify-end gap-2">
           <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
           <Button type="button" label="Save" :loading="adding" @click="add"></Button>
         </div>
       </Dialog>
+
+      <Button v-if="exam"
+              type="button"
+              label="Prüfung löschen"
+              icon="pi pi-trash"
+              @click="delExam"/>
 
       <Button type="button"
               label="Löschen"

@@ -17,7 +17,6 @@ if (storedKurse) {
   console.log(data.value);
   localStorage.setItem("courses", JSON.stringify(kurse.value));
 }
-
 // Watch for updates and sync them to localStorage
 watch(data, (newData) => {
   localStorage.setItem("courses", JSON.stringify(newData));
@@ -34,7 +33,8 @@ watch(data, (newData) => {
           :lecturer="kurs.lecturer"
           :room="kurs.room"
           :day="kurs.day"
-          :time="kurs.time"/>
+          :time="kurs.time"
+          :exam="kurs.exam"/>
     </div>
   </div>
 </template>

@@ -48,6 +48,7 @@ const props = defineProps({
   room: String,
   day: String,
   time: String,
+  exam: Object
 })
 
 let signDict
@@ -121,6 +122,14 @@ const load = async () => {
                 icon="pi pi-times-circle"
                 :loading="loading"
                 @click="load"/>
+      </div>
+
+      <div v-if="exam">
+        <ul>
+          <li>Prüfungsdatum: {{ exam.examDate }}</li>
+          <li>Prüfungsuhrzeit: {{ exam.examTime }}</li>
+        </ul>
+        <Button type="button" label="Prüfungsanmeldung"/>
       </div>
 
     </div>
