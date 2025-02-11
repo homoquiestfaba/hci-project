@@ -18,13 +18,17 @@ const props = defineProps({
 
 const courses = ref(JSON.parse(localStorage.getItem("courses")))
 
+const student = ref(JSON.parse(localStorage.getItem("student")))
+
 const visible = ref(false)
 const loading = ref(false);
 const deleting = ref(false);
 const adding = ref(false);
+const gradeVisible = ref(false);
 
 const examDate = ref(null);
 const examTime = ref("")
+const grade = ref(null);
 
 const load = () => {
   loading.value = true;
@@ -87,6 +91,25 @@ const delExam = () => {
   location.reload()
 }
 
+const gradeExists = ref(false)
+const addGrade = () => {
+  console.log("Grade");
+  let outGrade = {key: props.title, value: grade.value}
+  for (let e in student.value.exams) {
+    if (student.value.exams[e].key === outGrade.key) {
+      console.log("Yayyyyyyyyy")
+      student.value.exams[e].value = outGrade.value;
+      gradeExists.value = true;
+      break;
+    }
+  }
+  if (!gradeExists.value) {
+    student.value.exams.push(outGrade);
+  }
+  console.log(student.value.exams);
+  //student.value.exams.push();
+}
+
 const del = () => {
   deleting.value = true;
   for (let course in courses.value) {
@@ -123,48 +146,68 @@ const del = () => {
         <li v-if="exam">Prüfungsdatum: {{ exam.examDate }}</li>
         <li v-if="exam">Prüfungsuhrzeit: {{ exam.examTime }}</li>
       </ul>
-      <Button type="button"
-              label="Bearbeiten"
-              icon="pi pi-pencil"
-              :loading="loading"
-              @click="load"/>
+      <div class="grid grid-cols-2 gap-4">
+        <Button type="button"
+                label="Bearbeiten"
+                icon="pi pi-pencil"
+                :loading="loading"
+                @click="load"/>
 
-      <Button v-if="!exam"
-              type="button"
-              label="Prüfung"
-              icon="pi pi-plus-circle"
-              @click="visible = true"/>
-      <Dialog v-model:visible="visible" modal header="Prüfung hinzufügen" :style="{ width: '25rem' }">
+        <Button v-if="!exam"
+                type="button"
+                label="Prüfung"
+                icon="pi pi-plus-circle"
+                @click="visible = true"/>
+        <Dialog v-model:visible="visible" modal header="Prüfung hinzufügen" :style="{ width: '25rem' }">
         <span class="text-surface-500 dark:text-surface-400 block mb-8">
           Fügen Sie der Prüfung für den Kurs <strong>{{ title }}</strong> einen Termin hinzu
         </span>
-        <div class="flex flex-col items-center w-full gap-4 mb-4">
-          <FloatLabel variant="in">
-            <DatePicker id="date" class="flex-auto" v-model="examDate" dateFormat="dd/mm/yy"/>
-            <label>Datum</label>
-          </FloatLabel>
-          <FloatLabel variant="in">
-            <DatePicker id="email" class="flex-auto" v-model="examTime" timeOnly/>
-            <label>Uhrzeit</label>
-          </FloatLabel>
-        </div>
-        <div class="flex justify-end gap-2">
-          <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
-          <Button type="button" label="Save" :loading="adding" @click="add"></Button>
-        </div>
-      </Dialog>
+          <div class="flex flex-col items-center w-full gap-4 mb-4">
+            <FloatLabel variant="in">
+              <DatePicker id="date" class="flex-auto" v-model="examDate" dateFormat="dd/mm/yy"/>
+              <label>Datum</label>
+            </FloatLabel>
+            <FloatLabel variant="in">
+              <DatePicker id="email" class="flex-auto" v-model="examTime" timeOnly/>
+              <label>Uhrzeit</label>
+            </FloatLabel>
+          </div>
+          <div class="flex justify-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
+            <Button type="button" label="Save" :loading="adding" @click="add"></Button>
+          </div>
+        </Dialog>
 
-      <Button v-if="exam"
-              type="button"
-              label="Prüfung löschen"
-              icon="pi pi-trash"
-              @click="delExam"/>
+        <Button v-if="exam"
+                type="button"
+                label="Prüfung löschen"
+                icon="pi pi-trash"
+                @click="delExam"/>
 
-      <Button type="button"
-              label="Löschen"
-              icon="pi pi-trash"
-              :loading="deleting"
-              @click="del"/>
+        <Button v-if="!exam" type="button" label="Noten" icon="pi pi-trophy" @click="gradeVisible = true"/>
+        <Dialog v-model:visible="gradeVisible" modal header="Noten hinzufügen" :style="{ width: '25rem' }">
+        <span class="text-surface-500 dark:text-surface-400 block mb-8">
+          Fügen Sie Noten für die Studierenden des Kurses <strong>{{ title }}</strong> hinzu
+        </span>
+          <div class="flex flex-row items-center w-full gap-4 mb-4">
+            <p>Student: </p>
+            <FloatLabel variant="in">
+              <InputText id="grade" class="flex-auto" v-model="grade" dateFormat="dd/mm/yy"/>
+              <label>Note</label>
+            </FloatLabel>
+          </div>
+          <div class="flex justify-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="gradeVisible = false"></Button>
+            <Button type="button" label="Save" :loading="adding" @click="addGrade"></Button>
+          </div>
+        </Dialog>
+
+        <Button type="button"
+                label="Löschen"
+                icon="pi pi-trash"
+                :loading="deleting"
+                @click="del"/>
+      </div>
     </div>
   </div>
 </template>

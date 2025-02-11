@@ -165,11 +165,12 @@ const signout = () => {
       </div>
       <div v-if="!logInField">
         <div class="flex flex-row gap-7 justify-center">
-          <div class="flex flex-col gap-3 justify-center">
-            <p>student</p>
+          <div class="flex flex-col gap-3 justify-center opacity-0 back">
+            <InputText type="text" placeholder="..."></InputText>
+            <InputText type="text" placeholder="..."></InputText>
           </div>
           <div class="card flex justify-center">
-            <Button type="button" label="Abmelden" @click="signout"/>
+            <Button type="button" label="Abmelden" @click="signout" class="my-10"/>
           </div>
         </div>
       </div>
@@ -253,5 +254,9 @@ nav a:first-of-type {
 
 .write {
   color: var(--p-primary-contrast-color);
+}
+
+.back{
+  z-index: -1;
 }
 </style>
