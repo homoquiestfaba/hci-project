@@ -6,69 +6,10 @@ import Password from 'primevue/password';
 import Menubar from 'primevue/menubar'
 import {RouterLink, RouterView} from 'vue-router'
 import ConfirmDialog from "primevue/confirmdialog";
-</script>
-
-<template>
-  <ConfirmDialog group="templating">
-    <template #message="slotProps">
-      <div class="flex flex-col items-center w-full gap-4 border-b border-surface-200 dark:border-surface-700">
-        <i :class="slotProps.message.icon" class="!text-6xl text-primary-500"></i>
-        <p>{{ slotProps.message.message }}</p>
-      </div>
-    </template>
-  </ConfirmDialog>
-
-  <header>
-    <div data-aos="fade-down" data-aos-duration="5000" class="shadow-2xl flex justify-around items-center">
-      <div class="flex flex-row items-center gap-3">
-        <img alt="Vue logo" class="rounded-full" src="@/assets/gate.jpg" width="80" height="50"/>
-        <h1 class="text-3xl tracking-wide">Tannhäuser Gate</h1>
-      </div>
-      <div class="card !rounded-md">
-        <Menubar :model="items" class="">
-          <template #item="{ item, props, hasSubmenu }">
-            <div class="">
-              <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
-                <a v-ripple :href="href" v-bind="props.action" @click="navigate">
-                  <span :class="item.icon"/>
-                  <span>{{ item.label }}</span>
-                </a>
-              </RouterLink>
-              <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action">
-                <span :class="item.icon"/>
-                <span>{{ item.label }}</span>
-                <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down"/>
-              </a>
-            </div>
-          </template>
-        </Menubar>
-      </div>
-      <div class="flex flex-row gap-7">
-        <div class="flex flex-col gap-3 justify-center">
-          <InputText v-model="user" name="username" type="text" placeholder="Username"
-                     class="w-full"/>
-          <Password v-model="pass" name="password" toggleMask :feedback="false" placeholder="Passwort"
-                    class="bg-transparent"/>
-        </div>
-        <div class="card flex justify-center">
-          <Button class="my-10" type="button" label="Einloggen" icon="pi pi-sign-in"
-                  :loading="loading" @click="load"/>
-        </div>
-      </div>
-    </div>
-  </header>
-  <div>
-    <div class="pb-14"></div>
-    <RouterView data-aos="fade-down" data-aos-duration="4000" class="write"/>
-  </div>
-</template>
-
-<script>
-import {ref} from 'vue';
+import kurse from "@/assets/data/kurse.js";
+import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 
-
-const router = useRouter();
 
 const items = ref([
   {
@@ -96,12 +37,61 @@ const items = ref([
     route: 'campus'
   }
 ]);
+const router = useRouter();
+
+const logInField = ref(true)
+
+let student
+let lecturer
+
+const studentTest = localStorage.getItem('student');
+if (!studentTest) {
+  student = ref({
+    login: false,
+    exams: []
+  })
+  localStorage.setItem('student', JSON.stringify(student.value));
+} else {
+  student = ref(JSON.parse(localStorage.getItem('student')));
+}
+
+const lecturerTest = localStorage.getItem('lecturer');
+if (!lecturerTest) {
+  lecturer = ref({
+    login: false,
+  })
+  localStorage.setItem('lecturer', JSON.stringify(lecturer.value));
+} else {
+  lecturer = ref(JSON.parse(localStorage.getItem('lecturer')));
+}
+
+if (student.value.login) {
+  logInField.value = false;
+} else {
+  if (lecturer.value.login) {
+    logInField.value = false;
+  }
+}
 
 const loading = ref(false);
 const user = ref('')
 const pass = ref('')
 
 const load = () => {
+  if (user.value === "student") {
+    student.value.login = true;
+    logInField.value = false;
+    router.push("/student");
+    localStorage.setItem('student', JSON.stringify(student.value));
+    console.log(student.value);
+  } else{
+    if (user.value === "dozent"){
+      lecturer.value.login = true;
+      logInField.value = false;
+      router.push("/dozent");
+      localStorage.setItem('lecturer', JSON.stringify(lecturer.value));
+    }
+  }
   user.value = '';
   pass.value = '';
   loading.value = true;
@@ -110,6 +100,88 @@ const load = () => {
   }, 2000);
 };
 
+const signout = () => {
+  if (student.value.login){
+    student.value.login = false;
+    localStorage.setItem('student', JSON.stringify(student.value));
+  } else{
+  if (lecturer.value.login){
+    lecturer.value.login = false;
+    localStorage.setItem('lecturer', JSON.stringify(lecturer.value));
+  }}
+  router.push("/");
+  logInField.value = true;
+}
+</script>
+
+<template>
+  <ConfirmDialog group="templating">
+    <template #message="slotProps">
+      <div class="flex flex-col items-center w-full gap-4 border-b border-surface-200 dark:border-surface-700">
+        <i :class="slotProps.message.icon" class="!text-6xl text-primary-500"></i>
+        <p>{{ slotProps.message.message }}</p>
+      </div>
+    </template>
+  </ConfirmDialog>
+
+  <header>
+    <div data-aos="fade-down" data-aos-duration="5000" class="shadow-2xl grid grid-cols-3 gap-10 items-center">
+      <div class="flex flex-row justify-center items-center gap-3">
+        <img alt="Vue logo" class="rounded-full" src="@/assets/gate.jpg" width="80" height="50"/>
+        <h1 class="text-3xl tracking-wide">Tannhäuser Gate</h1>
+      </div>
+      <div class="card !rounded-md flex flex-row justify-center items-center">
+        <Menubar :model="items" class="">
+          <template #item="{ item, props, hasSubmenu }">
+            <div class="">
+              <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                <a v-ripple :href="href" v-bind="props.action" @click="navigate">
+                  <span :class="item.icon"/>
+                  <span>{{ item.label }}</span>
+                </a>
+              </RouterLink>
+              <a v-else v-ripple :href="item.url" :target="item.target" v-bind="props.action">
+                <span :class="item.icon"/>
+                <span>{{ item.label }}</span>
+                <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down"/>
+              </a>
+            </div>
+          </template>
+        </Menubar>
+      </div>
+      <div v-if="logInField">
+        <div class="flex flex-row gap-7 justify-center">
+          <div class="flex flex-col gap-3 justify-center">
+            <InputText v-model="user" name="username" type="text" placeholder="Username"
+                       class="w-full"/>
+            <Password v-model="pass" name="password" toggleMask :feedback="false" placeholder="Passwort"
+                      class="bg-transparent"/>
+          </div>
+          <div class="card flex justify-center">
+            <Button class="my-10" type="button" label="Einloggen" icon="pi pi-sign-in"
+                    :loading="loading" @click="load"/>
+          </div>
+        </div>
+      </div>
+      <div v-if="!logInField">
+        <div class="flex flex-row gap-7 justify-center">
+          <div class="flex flex-col gap-3 justify-center">
+            <p>student</p>
+          </div>
+          <div class="card flex justify-center">
+            <Button type="button" label="Abmelden" @click="signout"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div>
+    <div class="pb-14"></div>
+    <RouterView data-aos="fade-down" data-aos-duration="4000" class="write"/>
+  </div>
+</template>
+
+<script>
 </script>
 
 <style scoped>

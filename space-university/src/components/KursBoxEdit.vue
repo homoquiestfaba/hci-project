@@ -23,7 +23,7 @@ const loading = ref(false);
 const deleting = ref(false);
 const adding = ref(false);
 
-const examDate = ref("");
+const examDate = ref(null);
 const examTime = ref("")
 
 const load = () => {
@@ -71,6 +71,7 @@ const add = async () => {
 
   adding.value = false;
   visible.value = false;
+  location.reload()
 };
 
 const delExam = () => {
@@ -119,6 +120,8 @@ const del = () => {
         <li>Raum: {{ room }}</li>
         <li>Tag: {{ day }}</li>
         <li>Uhrzeit: {{ time }}</li>
+        <li v-if="exam">Prüfungsdatum: {{ exam.examDate }}</li>
+        <li v-if="exam">Prüfungsuhrzeit: {{ exam.examTime }}</li>
       </ul>
       <Button type="button"
               label="Bearbeiten"

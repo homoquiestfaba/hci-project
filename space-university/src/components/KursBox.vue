@@ -98,40 +98,43 @@ const load = async () => {
   <div class="">
     <div class="intro-box" data-aos="fade-up"
          data-aos-delay="100">
-      <h2 class="text-2xl">
+      <h2 class="text-2xl text-center">
         {{ title }}
       </h2>
-      <hr>
-      <ul>
-        <li>Beschreibung: {{ description }}</li>
-        <li>Dozierender: {{ lecturer }}</li>
-        <li>Raum: {{ room }}</li>
-        <li>Tag: {{ day }}</li>
-        <li>Uhrzeit: {{ time }}</li>
-      </ul>
-      <div v-if="sign">
-        <Button type="button"
-                label="Anmelden"
-                icon="pi pi-pen-to-square"
-                :loading="loading"
-                @click="load"/>
-      </div>
-      <div v-else>
-        <Button type="button"
-                label="Abmelden"
-                icon="pi pi-times-circle"
-                :loading="loading"
-                @click="load"/>
-      </div>
-
-      <div v-if="exam">
+      <div class="flex flex-row gap-5 justify-center items-center">
+      <div>
         <ul>
-          <li>Prüfungsdatum: {{ exam.examDate }}</li>
-          <li>Prüfungsuhrzeit: {{ exam.examTime }}</li>
+          <li>Beschreibung: {{ description }}</li>
+          <li>Dozierender: {{ lecturer }}</li>
+          <li>Raum: {{ room }}</li>
+          <li>Tag: {{ day }}</li>
+          <li>Uhrzeit: {{ time }}</li>
         </ul>
-        <Button type="button" label="Prüfungsanmeldung"/>
+        <div v-if="sign">
+          <Button type="button"
+                  label="Anmelden"
+                  icon="pi pi-pen-to-square"
+                  :loading="loading"
+                  @click="load"/>
+        </div>
+        <div v-else>
+          <Button type="button"
+                  label="Abmelden"
+                  icon="pi pi-times-circle"
+                  :loading="loading"
+                  @click="load"/>
+        </div>
       </div>
-
+      <div>
+        <div v-if="exam">
+          <ul>
+            <li>Prüfungsdatum: {{ exam.examDate }}</li>
+            <li>Prüfungsuhrzeit: {{ exam.examTime }}</li>
+          </ul>
+          <Button type="button" label="Prüfungsanmeldung"/>
+        </div>
+      </div>
+      </div>
     </div>
   </div>
 </template>
