@@ -1,0 +1,1 @@
+import{S as e,o,ai as l}from"./index-DDcTqExs.js";const t="<ul><li>Name: Professor Dozent</li><li>Email: professor@space-uni.all</li><li>Raum: BSG75</li><li>Sprechstunde: 11:00 - 12:30</li></ul>",s={__name:"ProfileView",setup(i){return(r,a)=>(o(),e(l,{title:"Dozent Profil",content:t}))}};export{s as default};
