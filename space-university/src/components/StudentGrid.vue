@@ -6,6 +6,9 @@
     <RouterLink to="/stundenplan">
       <Box title="Stundenplan" click />
     </RouterLink>
+    <RouterLink to="profil">
+      <Box title="Dozenten-Profile" click />
+    </RouterLink>
   </div>
 </template>
 

@@ -178,7 +178,8 @@ const del = () => {
                 icon="pi pi-trash"
                 @click="delExam"/>
 
-        <Button type="button" label="Noten" icon="pi pi-trophy" @click="gradeVisible = true"/>
+        <Button v-if="!exam" disabled label="Noten" icon="pi pi-trophy"></Button>
+        <Button v-else type="button" label="Noten" icon="pi pi-trophy" @click="gradeVisible = true"/>
         <Dialog v-model:visible="gradeVisible" modal header="Noten hinzufügen" :style="{ width: '25rem' }">
         <span class="text-surface-500 dark:text-surface-400 block mb-8">
           Fügen Sie Noten für die Studierenden des Kurses <strong>{{ title }}</strong> hinzu

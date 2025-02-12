@@ -7,7 +7,7 @@ import Button from "primevue/button";
 import {ref, watch, computed} from "vue";
 
 // Define the days of the week
-const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+const days = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 
 const row = [1, 2, 3, 4, 5, 6, 7];
 
@@ -124,13 +124,43 @@ const clearSlot = (curr) => {
 </script>
 
 <template>
+  <!-- Timetable Table -->
+  <div class="mx-20 mt-10">
+    <div class="flex flex-col items-center justify-center">
+      <table class="w-full max-w-5xl border-collapse shadow-lg rounded-md overflow-hidden">
+        <thead>
+        <tr class="text-white">
+          <th v-for="day in days" :key="day" class="px-6 py-3 text-lg font-semibold text-center">
+            {{ day }}
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="slot in times.length" :key="slot"
+            class="tableblock odd:bg-surface-600 even:bg-surface-700">
+          <td v-for="day in days" :key="day" class="px-6 py-4 text-center border border-surface-900">
+            <div v-for="curr in currentWeekCourses[day]">
+                <div v-if="curr.span === times[slot-1]" class="shadow-md rounded-lg p-4">
+                  <p><strong>{{ curr.title }}</strong></p>
+                  <p>{{curr.time }}</p>
+                  <p>{{ curr.room }}</p>
+                  <p v-if="curr.lecturer">{{ curr.lecturer }}</p>
+                  <Button icon="pi pi-trash" @click="clearSlot(curr.title)"/>
+                </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <div class="flex flex-col justify-center items-center gap-3">
-    <h2 class="text-2xl font-bold my-4">Timetable - Week {{ currentWeek }}</h2>
+    <h2 class="text-2xl font-bold my-4">Woche {{ currentWeek }}</h2>
 
     <!-- Week Navigation -->
     <div class="week-controls">
-      <Button @click="changeWeek(-1)" class="nav-btn">Previous Week</Button>
-      <Button @click="changeWeek(1)" class="nav-btn">Next Week</Button>
+      <Button @click="changeWeek(-1)" class="nav-btn">Vorige Woche</Button>
+      <Button @click="changeWeek(1)" class="nav-btn">Nächste Woche</Button>
     </div>
 
     <!-- Course Input Form -->
@@ -163,36 +193,6 @@ const clearSlot = (curr) => {
       <!--
       <Button @click="clearTimetable" class="clear-btn">Clear This Week</Button>
       -->
-    </div>
-  </div>
-
-  <!-- Timetable Table -->
-  <div class="mx-20 mt-10">
-    <div class="flex flex-col items-center justify-center">
-      <table class="w-full max-w-5xl border-collapse shadow-lg rounded-md overflow-hidden">
-        <thead>
-        <tr class="text-white">
-          <th v-for="day in days" :key="day" class="px-6 py-3 text-lg font-semibold text-center">
-            {{ day }}
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="slot in times.length" :key="slot"
-            class="tableblock odd:bg-surface-600 even:bg-surface-700">
-          <td v-for="day in days" :key="day" class="px-6 py-4 text-center border border-surface-900">
-            <div v-for="curr in currentWeekCourses[day]">
-                <div v-if="curr.span === times[slot-1]" class="shadow-md rounded-lg p-4">
-                  <p>{{ curr.title }}</p>
-                  <p>{{ currentWeekCourses[day][0].span }}</p>
-                  <p>{{ curr.time }}</p>
-                  <Button icon="pi pi-trash" @click="clearSlot(curr.title)"/>
-                </div>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 

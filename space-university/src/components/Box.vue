@@ -15,9 +15,8 @@ const props = defineProps({
       </h2>
       <hr>
       <div v-if="content">
-        <p>
-          {{ content }}
-        </p>
+        <div v-html="content">
+        </div>
       </div>
     </div>
   </div>

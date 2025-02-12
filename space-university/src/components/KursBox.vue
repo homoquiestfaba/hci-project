@@ -106,7 +106,7 @@ const load = async () => {
       <div>
         <ul>
           <li>Beschreibung: {{ description }}</li>
-          <li>Dozierender: {{ lecturer }}</li>
+          <li>Dozierender: <RouterLink to="profil">{{ lecturer }}</RouterLink></li>
           <li>Raum: {{ room }}</li>
           <li>Tag: {{ day }}</li>
           <li>Uhrzeit: {{ time }}</li>

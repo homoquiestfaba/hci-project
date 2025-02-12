@@ -18,7 +18,7 @@ const fields = [
   "Staat",
   "Planet",
   "E-Mail",
-  "Lieblingsfarbe"
+  "Studiengang"
 ];
 
 // Zustand für den Ladebutton

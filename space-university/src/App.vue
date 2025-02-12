@@ -17,7 +17,7 @@ const items = ref([
     icon: 'pi pi-home',
     route: '/'
   },
-  {
+  /*{
     label: 'Rolle',
     icon: 'pi pi-user',
     items: [
@@ -30,7 +30,7 @@ const items = ref([
         route: 'dozent'
       }
     ]
-  },
+  },*/
   {
     label: 'Campus',
     icon: 'pi pi-map',
@@ -152,7 +152,7 @@ const signout = () => {
       <div v-if="logInField">
         <div class="flex flex-row gap-7 justify-center">
           <div class="flex flex-col gap-3 justify-center">
-            <InputText v-model="user" name="username" type="text" placeholder="Username"
+            <InputText v-model="user" name="username" type="text" placeholder="Benutzername"
                        class="w-full"/>
             <Password v-model="pass" name="password" toggleMask :feedback="false" placeholder="Passwort"
                       class="bg-transparent"/>
