@@ -101,6 +101,7 @@ const addGrade = () => {
       localStorage.setItem("courses", JSON.stringify(courses.value));
     }
   }
+  gradeVisible.value = false;
   //student.value.exams.push();
 }
 
