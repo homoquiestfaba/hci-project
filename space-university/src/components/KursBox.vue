@@ -151,7 +151,7 @@ const examFunc = async () => {
           <ul>
             <li>Beschreibung: {{ description }}</li>
             <li>Dozierender:
-              <RouterLink to="profil">{{ lecturer }}</RouterLink>
+              <RouterLink to="profil"><u>{{ lecturer }}</u></RouterLink>
             </li>
             <li>Raum: {{ room }}</li>
             <li>Tag: {{ day }}</li>

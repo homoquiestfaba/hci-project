@@ -112,6 +112,7 @@ const signout = () => {
   }}
   router.push("/");
   logInField.value = true;
+  location.reload()
 }
 </script>
 
