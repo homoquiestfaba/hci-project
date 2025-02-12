@@ -78,7 +78,7 @@ const load = () => {
       </FloatLabel>
     </div>
     <div class="flex flex-col items-center justify-center gap-3">
-      <Button class="my-10 char" type="button" label="Abschicken" icon="pi pi-sign-in" @click="load" />
+      <Button class="my-10 char" type="button" label="Erstellen" icon="pi pi-upload" @click="load" />
     </div>
   </div>
 </template>

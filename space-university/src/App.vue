@@ -10,7 +10,6 @@ import kurse from "@/assets/data/kurse.js";
 import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 
-
 const items = ref([
   {
     label: 'Home',
@@ -81,14 +80,14 @@ const load = () => {
   if (user.value === "student") {
     student.value.login = true;
     logInField.value = false;
-    router.push("/student");
+    //router.push("/student");
     localStorage.setItem('student', JSON.stringify(student.value));
     console.log(student.value);
   } else{
     if (user.value === "dozent"){
       lecturer.value.login = true;
       logInField.value = false;
-      router.push("/dozent");
+      //router.push("/dozent");
       localStorage.setItem('lecturer', JSON.stringify(lecturer.value));
     }
   }
@@ -98,6 +97,8 @@ const load = () => {
   setTimeout(() => {
     loading.value = false;
   }, 2000);
+
+  location.reload()
 };
 
 const signout = () => {

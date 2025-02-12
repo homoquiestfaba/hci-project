@@ -27,6 +27,8 @@ console.log(userStudent.value.login)
 
 <template>
   <main>
-    <Intro></Intro>
+    <StudentView v-if="userStudent.login"></StudentView>
+    <DozentView v-if="userLecturer.login"></DozentView>
+    <Intro v-else></Intro>
   </main>
 </template>
